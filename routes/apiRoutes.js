@@ -28,4 +28,20 @@ router.post("/api/workouts", (req, res) => {
         })
 
 });
+
+//Add to a previous workout.
+router.put("/api/workouts/:id", ({ body, params }, res) => {
+    Workout.findByIdAndUpdate(params.id,
+        {
+            $push: { exercises: body }
+        }
+            .then(dbWorkouts => {
+                res.json(dbWorkouts);
+            })
+            .catch(err => {
+                res.json(err);
+            })
+    )
+});
+
 module.exports = router;
