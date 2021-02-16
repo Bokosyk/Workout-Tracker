@@ -22,6 +22,7 @@ app.listen(PORT, () => {
     console.log(`==> 🌎 App running on http://localhost:${PORT}`);
 })
 
+//Connects to Mongoose
 Mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
