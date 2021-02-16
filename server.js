@@ -6,6 +6,7 @@ const Mongoose = require("mongoose");
 const app = express();
 const PORT = 3002;
 
+//Inquire about this section. Something to do with morgan.
 app.use(logger("dev"));
 
 //Inquire about this section
