@@ -42,6 +42,7 @@ const workoutSchema = new Schema({
     ],
 });
 
+//Workout is going to be our collection name.
 const Workout = mongoose.model('Workout', workoutSchema);
 
 //Exports
