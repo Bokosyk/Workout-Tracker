@@ -10,13 +10,6 @@ const Workout = require('../models/workout');
 router.get("/api/workouts", (req, res) => {
     Workout.find()
         .then(dbWorkouts => {
-            dbWorkouts.forEach(workout => {
-                var sum = 0;
-                workout.exercises.forEach(event => {
-                    sum += event.duration;
-                })
-            })
-            workout.totalDuration = sum;
             res.json(dbWorkouts);
         })
         .catch(err => {
@@ -38,17 +31,19 @@ router.post("/api/workouts", (req, res) => {
 
 //Add to a previous workout.
 router.put("/api/workouts/:id", ({ body, params }, res) => {
-    Workout.findByIdAndUpdate(params.id,
+    Workout.findOneAndUpdate(
+        { _id: params.id },
         {   //Found this option os stack overflow on how to push inside of an array.
-            $push: { exercises: body }
-        }
-            .then(dbWorkouts => {
-                res.json(dbWorkouts);
-            })
-            .catch(err => {
-                res.json(err);
-            })
-    )
+            $push: { exercises: body },
+            $inc: { totalDuration: body.duration },
+        },
+        { new: true }).then(dbWorkouts => {
+            res.json(dbWorkouts);
+        })
+        .catch(err => {
+            res.json(err);
+        })
+
 });
 
 //Delete a workout.
@@ -62,7 +57,7 @@ router.delete("/api/workouts", ({ body }, res) => {
         })
 })
 
-// In range
+// range
 router.get("/api/workouts/range", (req, res) => {
     Workout.find({})
         .then(dbWorkout => {
