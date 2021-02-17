@@ -8,14 +8,21 @@ const Workout = require('../models/workout');
 
 //Continue Workout
 router.get("/api/workouts", (req, res) => {
-    Workout.find()
+    Workout.find({})
         .then(dbWorkouts => {
-            res.json(dbWorkouts);
+            dbWorkouts.forEach(workout => {
+                var sum = 0;
+                workout.exercises.forEach(event => {
+                    sum += event.duration;
+                });
+                workout.totalDuration = sum;
+                res.json(dbWorkouts);
+            })
+                .catch(err => {
+                    res.json(err);
+                })
         })
-        .catch(err => {
-            res.json(err);
-        })
-})
+});
 
 //New Workout
 router.post("/api/workouts", (req, res) => {
