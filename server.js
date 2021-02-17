@@ -1,10 +1,13 @@
 const express = require("express");
 const logger = require("morgan");
 const Mongoose = require("mongoose");
+const compression = require('compression')
 
 //Creating an instance of express
 const app = express();
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
+
+app.use(compression())
 
 //Inquire about this section. Something to do with morgan.
 app.use(logger("dev"));
