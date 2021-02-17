@@ -32,7 +32,7 @@ router.post("/api/workouts", (req, res) => {
 //Add to a previous workout.
 router.put("/api/workouts/:id", ({ body, params }, res) => {
     Workout.findByIdAndUpdate(params.id,
-        {
+        {   //Found this option os stack overflow on how to push inside of an array.
             $push: { exercises: body }
         }
             .then(dbWorkouts => {
