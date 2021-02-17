@@ -8,20 +8,21 @@ const Workout = require('../models/workout');
 
 //Continue Workout
 router.get("/api/workouts", (req, res) => {
-    Workout.find({})
-        .then(dbWorkouts => {
-            dbWorkouts.forEach(workout => {
-                var sum = 0;
-                workout.exercises.forEach(event => {
-                    sum += event.duration;
-                });
-                workout.totalDuration = sum;
-                res.json(dbWorkouts);
-            })
-                .catch(err => {
-                    res.json(err);
-                })
-        })
+    Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: {
+                    $sum: '$exercises.duration',
+                },
+            },
+        },
+    ])
+    .then((dbWorkouts) => {
+        res.json(dbWorkouts);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
 });
 
 //New Workout
