@@ -10,6 +10,13 @@ const Workout = require('../models/workout');
 router.get("/api/workouts", (req, res) => {
     Workout.find()
         .then(dbWorkouts => {
+            dbWorkouts.forEach(workout => {
+                var total = 0;
+                workout.exercises.forEach(event => {
+                    total += event.duration;
+                })
+            })
+            workout.totalduration = total;
             res.json(dbWorkouts);
         })
         .catch(err => {
@@ -45,14 +52,14 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
 });
 
 //Delete a workout.
-router.delete("/api/workouts", ({body}, res) => {
+router.delete("/api/workouts", ({ body }, res) => {
     Workout.findByIdAndDelete(body.id)
-    .then(() => {
-        res.json(true);
-    })
-    .catch(err => {
-        res.json(err);
-    })
+        .then(() => {
+            res.json(true);
+        })
+        .catch(err => {
+            res.json(err);
+        })
 })
 
 module.exports = router;
