@@ -16,7 +16,7 @@ router.get("/api/workouts", (req, res) => {
                     total += event.duration;
                 })
             })
-            workout.totalduration = total;
+            workout.totalDuration = total;
             res.json(dbWorkouts);
         })
         .catch(err => {
@@ -56,6 +56,17 @@ router.delete("/api/workouts", ({ body }, res) => {
     Workout.findByIdAndDelete(body.id)
         .then(() => {
             res.json(true);
+        })
+        .catch(err => {
+            res.json(err);
+        })
+})
+
+// range
+router.get("/api/workouts/range", (req, res) => {
+    Workout.find({})
+        .then(dbWorkout => {
+            res.json(dbWorkout);
         })
         .catch(err => {
             res.json(err);
