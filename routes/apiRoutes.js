@@ -11,12 +11,12 @@ router.get("/api/workouts", (req, res) => {
     Workout.find()
         .then(dbWorkouts => {
             dbWorkouts.forEach(workout => {
-                var total = 0;
+                var sum = 0;
                 workout.exercises.forEach(event => {
-                    total += event.duration;
+                    sum += event.duration;
                 })
             })
-            workout.totalDuration = total;
+            workout.totalDuration = sum;
             res.json(dbWorkouts);
         })
         .catch(err => {
@@ -62,7 +62,7 @@ router.delete("/api/workouts", ({ body }, res) => {
         })
 })
 
-// range
+// In range
 router.get("/api/workouts/range", (req, res) => {
     Workout.find({})
         .then(dbWorkout => {
